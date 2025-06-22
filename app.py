@@ -29,7 +29,9 @@ def init_db():
     """根据schema.sql初始化数据库"""
     with app.app_context():
         db = get_db()
-        with io.open('schema.sql', 'r', encoding='utf-8') as f:
+        # 构造schema.sql的绝对路径，防止在不同工作目录下出错
+        schema_path = os.path.join(os.path.dirname(__file__), 'schema.sql')
+        with io.open(schema_path, 'r', encoding='utf-8') as f:
             db.cursor().executescript(f.read())
         db.commit()
 
