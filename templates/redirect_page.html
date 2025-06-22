@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面加载中...</title>
+    <!-- 下面这行代码可以设置一个简单的页面图标 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>">
+    
+    <style>
+        /* 这里是页面的样式，可以美化页面 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 90%; /* 确保在小屏幕上不会过宽 */
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        a {
+            font-size: 18px;
+            color: white;
+            background-color: #007bff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        /* 关键：为手机等小屏幕设备添加的优化样式 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                margin: 15px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            p {
+                font-size: 14px;
+            }
+            a {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title-heading">即将离开当前页面</h1>
+        <p id="instruction-paragraph">请点击下方按钮，继续访问目标网站。</p>
+        
+        <a href="{{ original_url }}" id="action-button">点击这里继续</a>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                en: {
+                    pageTitle: "Redirecting...",
+                    heading: "Leaving Current Page",
+                    instruction: "Please click the button below to proceed to the destination website.",
+                    button: "Proceed to Site"
+                },
+                zh: {
+                    pageTitle: "页面加载中...",
+                    heading: "即将离开当前页面",
+                    instruction: "请点击下方按钮，继续访问目标网站。",
+                    button: "点击这里继续"
+                },
+                es: { // 西班牙语
+                    pageTitle: "Redirigiendo...",
+                    heading: "Saliendo de la página actual",
+                    instruction: "Por favor, haga clic en el botón de abajo para ir al sitio web de destino.",
+                    button: "Continuar al sitio"
+                },
+                fr: { // 法语
+                    pageTitle: "Redirection...",
+                    heading: "Vous quittez la page actuelle",
+                    instruction: "Veuillez cliquer sur le bouton ci-dessous pour accéder au site web de destination.",
+                    button: "Accéder au site"
+                },
+                de: { // 德语
+                    pageTitle: "Weiterleitung...",
+                    heading: "Aktuelle Seite wird verlassen",
+                    instruction: "Bitte klicken Sie auf die Schaltfläche unten, um zur Ziel-Website zu gelangen.",
+                    button: "Zur Website"
+                },
+                ja: { // 日语
+                    pageTitle: "リダイレクト中...",
+                    heading: "現在のページから移動します",
+                    instruction: "下のボタンをクリックして、対象のウェブサイトに進んでください。",
+                    button: "サイトに進む"
+                },
+                ru: { // 俄语
+                    pageTitle: "Перенаправление...",
+                    heading: "Вы покидаете текущую страницу",
+                    instruction: "Пожалуйста, нажмите кнопку ниже, чтобы перейти на целевой веб-сайт.",
+                    button: "Перейти на сайт"
+                },
+                pt: { // 葡萄牙语
+                    pageTitle: "Redirecionando...",
+                    heading: "Saindo da página atual",
+                    instruction: "Por favor, clique no botão abaixo para ir para o site de destino.",
+                    button: "Ir para o site"
+                },
+                hi: { // 印地语
+                    pageTitle: "रीडायरेक्ट किया जा रहा है...",
+                    heading: "वर्तमान पृष्ठ छोड़ रहे हैं",
+                    instruction: "गंतव्य वेबसाइट पर जाने के लिए कृपया नीचे दिए गए बटन पर क्लिक करें।",
+                    button: "साइट पर जाएं"
+                },
+                ko: { // 韩语
+                    pageTitle: "리디렉션 중...",
+                    heading: "현재 페이지를 떠납니다",
+                    instruction: "대상 웹사이트로 이동하려면 아래 버튼을 클릭하십시오.",
+                    button: "사이트로 이동"
+                },
+                ar: { // 阿拉伯语
+                    pageTitle: "إعادة توجيه...",
+                    heading: "مغادرة الصفحة الحالية",
+                    instruction: "يرجى الضغط على الزر أدناه للمتابعة إلى موقع الويب المقصود.",
+                    button: "الانتقال إلى الموقع"
+                },
+                fa: { // 波斯语
+                    pageTitle: "در حال هدایت...",
+                    heading: "خروج از صفحه فعلی",
+                    instruction: "لطفا برای رفتن به وب سایت مورد نظر روی دکمه زیر کلیک کنید.",
+                    button: "رفتن به سایت"
+                }
+            };
+
+            const userLang = navigator.language || navigator.userLanguage;
+            let lang = 'en'; // 默认语言为英语
+            if (translations[userLang]) {
+                lang = userLang;
+            } else if (translations[userLang.substring(0, 2)]) {
+                lang = userLang.substring(0, 2);
+            }
+
+            // 针对RTL语言，设置页面方向
+            if (lang === 'ar' || lang === 'fa') {
+                document.documentElement.dir = 'rtl';
+            }
+
+            document.title = translations[lang].pageTitle;
+            document.getElementById('title-heading').textContent = translations[lang].heading;
+            document.getElementById('instruction-paragraph').textContent = translations[lang].instruction;
+            document.getElementById('action-button').textContent = translations[lang].button;
+        });
+    </script>
+</body>
+</html> 
